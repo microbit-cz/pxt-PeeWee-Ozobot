@@ -31,32 +31,53 @@ input.onButtonPressed(Button.A, function (){
                 PCAmotor.MotorRun(PCAmotor.Motors.M1, 90)
                 PCAmotor.MotorRun(PCAmotor.Motors.M4, 90)
             }
-            // if (left == 0 && right == 1) {
-            //     PCAmotor.MotorRun(PCAmotor.Motors.M1, 70)
-            //     PCAmotor.MotorRun(PCAmotor.Motors.M4, 90)
-            // }
-            // if (left == 1 && right == 0) {
-            //     PCAmotor.MotorRun(PCAmotor.Motors.M1, 90)
-            //     PCAmotor.MotorRun(PCAmotor.Motors.M4, 70)
-            // }
+        
+        control.inBackground(function() {
+            basic.showLeds(`
+        . . # . .
+        . # # # .
+        # . # . #
+        . . # . .
+        . . # . .
+        `)
+        })
+        
 
         }
-        if (center == 0){
+        // if (center == 0){
             PCAmotor.MotorRun(PCAmotor.Motors.M1, 70)
             PCAmotor.MotorRun(PCAmotor.Motors.M4, 70)
             if (left == 1 && right == 0) {
-                PCAmotor.MotorRun(PCAmotor.Motors.M1, 65)
+                PCAmotor.MotorRun(PCAmotor.Motors.M1, 60)
                 PCAmotor.MotorRun(PCAmotor.Motors.M4, 90)
+                control.inBackground(function() {
+                    basic.showLeds(`
+                    . . # . .
+                    . # . . .
+                    # # # # #
+                    . # . . .
+                    . . # . .
+                    `)
+                })
+                
             }
             if (left == 0 && right == 1) {
                 PCAmotor.MotorRun(PCAmotor.Motors.M1, 90)
-                PCAmotor.MotorRun(PCAmotor.Motors.M4, 65)
+                PCAmotor.MotorRun(PCAmotor.Motors.M4, 60)
+                control.inBackground(function() {
+                    basic.showLeds(`
+                    . . # . .
+                    . . . # .
+                    # # # # #
+                    . . . # .
+                    . . # . .
+                    `)
+                })
             }
-        }
+        // }
     })
 })
 
-PlanetX_RGBsensor.readColor()
 
 
 
