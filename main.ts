@@ -13,6 +13,10 @@ let right: number = 0
 let left: number = 0
 let speed: number = 75
 let speedTurn: number = 65
+let turnRight = false
+let turnLeft = false
+let time1 = 0
+let time2 = 0
 pins.setPull(centerP, PinPullMode.PullNone)
 pins.setPull(rightP, PinPullMode.PullNone)
 pins.setPull(leftP, PinPullMode.PullNone)
@@ -40,9 +44,9 @@ input.onButtonPressed(Button.A, function () {
                     `)
             }
         }
-        if (center == 0) {
+        // if (center == 0) {
             if (right == 0 && left == 1){
-                speed = 75
+                speed = 70
                 speedTurn = 50
                 PCAmotor.MotorRun(PCAmotor.Motors.M1, speedTurn)
                 PCAmotor.MotorRun(PCAmotor.Motors.M4, speed)
@@ -53,9 +57,10 @@ input.onButtonPressed(Button.A, function () {
                     . # . . .
                     . . # . .
                     `)
+                turnLeft = true
             }
             if (right == 1 && left == 0){
-                speed = 75
+                speed = 70
                 speedTurn = 50
                 PCAmotor.MotorRun(PCAmotor.Motors.M1, speed)
                 PCAmotor.MotorRun(PCAmotor.Motors.M4, speedTurn)
@@ -66,42 +71,44 @@ input.onButtonPressed(Button.A, function () {
                     . . . # .
                     . . # . .
                     `)
+                turnRight = true
             }
-        }  
-        // if (right == 0 && left == 1) {
-        //     speed = 70
-        //     speedTurn = 40
-        //     // if (center == 0) {
-        //     //     speedTurn = 45
-        //     //     speed = 70
-        //     // }
-        //     PCAmotor.MotorRun(PCAmotor.Motors.M1, speedTurn)
+        // }
+        if (turnLeft == true){
+            time1 = control.millis()
+            if(center == 1){
+                time2 = control.millis()
+                PCAmotor.MotorRun(PCAmotor.Motors.M1, speed)
+                PCAmotor.MotorRun(PCAmotor.Motors.M4, speed - 10)
+                if (time2 - time1 > 50){
+                    time1 = 0
+                    time2 = 0
+                    turnLeft = false
+                }
+            }
+        }
+        if (turnRight == true) {
+            if (center == 1) {
+                time2 = control.millis()
+                PCAmotor.MotorRun(PCAmotor.Motors.M1, speed - 10)
+                PCAmotor.MotorRun(PCAmotor.Motors.M4, speed)
+                if (time2 - time1 > 50) {
+                    time1 = 0
+                    time2 = 0
+                    turnRight = false
+                }
+            }
+        }
+
+        // if (center == 1 &&  left == 1){
+        //     PCAmotor.MotorRun(PCAmotor.Motors.M1, -75)
         //     PCAmotor.MotorRun(PCAmotor.Motors.M4, speed)
-        //     basic.showLeds(`
-        //             . . # . .
-        //             . # . . .
-        //             # # # # #
-        //             . # . . .
-        //             . . # . .
-        //             `)
-        // }
-        // if (right == 1 && left == 0) {
-        //     speed = 70
-        //     speedTurn = 40
-        //     // if (center == 0) {
-        //     //     speedTurn = 45
-        //     //     speed = 70
-        //     // }
+        // }   
+        // if (center == 1 && right == 1) {
         //     PCAmotor.MotorRun(PCAmotor.Motors.M1, speed)
-        //     PCAmotor.MotorRun(PCAmotor.Motors.M4, speedTurn)
-        //     basic.showLeds(`
-        //             . . # . .
-        //             . . . # .
-        //             # # # # #
-        //             . . . # .
-        //             . . # . .
-        //             `)
+        //     PCAmotor.MotorRun(PCAmotor.Motors.M4, -75)
         // }
+
 
     
     })
