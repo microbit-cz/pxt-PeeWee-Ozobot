@@ -8,13 +8,13 @@
 const centerP: DigitalPin = DigitalPin.P15;
 const rightP: DigitalPin = DigitalPin.P13;
 const leftP: DigitalPin = DigitalPin.P14;
-let center: number = 0
-let right: number = 0
-let left: number = 0
+let center: boolean = true
+let right: boolean = false
+let left: boolean = false
 let speed1: number = 70
 let speed2: number = 70
-
 let time = 0
+let whiteLine: number = 0
 pins.setPull(centerP, PinPullMode.PullNone)
 pins.setPull(rightP, PinPullMode.PullNone)
 pins.setPull(leftP, PinPullMode.PullNone)
@@ -39,8 +39,8 @@ function stableRight() {
 }
 
 function forward(){
-    speed1 = 70
-    speed2 = 70
+    speed1 = 80
+    speed2 = 80
     PCAmotor.MotorRun(PCAmotor.Motors.M1, speed1)
     PCAmotor.MotorRun(PCAmotor.Motors.M4, speed2)
     basic.showLeds(`
@@ -53,8 +53,8 @@ function forward(){
 }
 
 function turnLeft(){
-    speed1 = 55
-    speed2 = 75
+    speed1 = -50
+    speed2 = 70
     PCAmotor.MotorRun(PCAmotor.Motors.M1, speed1)
     PCAmotor.MotorRun(PCAmotor.Motors.M4, speed2)
     basic.showLeds(`
@@ -64,14 +64,11 @@ function turnLeft(){
         . # . . .
         . . # . .
         `)
-    // if(center == 1){
-
-    // }
 }
 
 function turnRight() {
-    speed1 = 75
-    speed2 = 55
+    speed1 = 70
+    speed2 = -50
     PCAmotor.MotorRun(PCAmotor.Motors.M1, speed1)
     PCAmotor.MotorRun(PCAmotor.Motors.M4, speed2)
     basic.showLeds(`
@@ -85,28 +82,16 @@ function turnRight() {
 
 
     basic.forever(function () {
-        center = pins.digitalReadPin(centerP);
-        right = pins.digitalReadPin(rightP);
-        left = pins.digitalReadPin(leftP);
-        // console.logValue("center", center)
-        // console.logValue("right", right)
-        // console.logValue("left", left)
-        // basic.pause(50)
-        if (center == 1) {
-            if (left == 0 && right == 0) {
-                forward()
-            }
+        center = (whiteLine ^ pins.digitalReadPin(centerP)) == 0 ? false : true;
+        right = (whiteLine ^ pins.digitalReadPin(rightP)) == 0 ? false : true;
+        left = (whiteLine ^ pins.digitalReadPin(leftP)) == 0 ? false : true;
+        if(right){
+            turnRight()
+        }else if(left){
+            turnLeft()
+        }else{
+            forward()
         }
-        // if (center == 0) {
-            if (right == 0 && left == 1){
-                turnLeft() 
-                
-            }
-            else if (right == 1 && left == 0){
-               turnRight()
-            
-            }
-        // }
     })
 
 
