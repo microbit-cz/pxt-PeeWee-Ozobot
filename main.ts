@@ -18,6 +18,7 @@ let whiteLine: number = 0
 pins.setPull(centerP, PinPullMode.PullNone)
 pins.setPull(rightP, PinPullMode.PullNone)
 pins.setPull(leftP, PinPullMode.PullNone)
+music.setVolume(255)
 
 function stableLeft() {
         time = control.millis()
@@ -43,6 +44,9 @@ function forward(){
     speed2 = 100
     PCAmotor.MotorRun(PCAmotor.Motors.M1, speed1)
     PCAmotor.MotorRun(PCAmotor.Motors.M4, speed2)
+    // control.inBackground(function() {
+    //     music.playTone(Note.C, music.beat(10))
+    // })
     // basic.showLeds(`
     //     . . # . .
     //     . # # # .
@@ -57,6 +61,9 @@ function turnLeft(){
     speed2 = 80
     PCAmotor.MotorRun(PCAmotor.Motors.M1, speed1)
     PCAmotor.MotorRun(PCAmotor.Motors.M4, speed2)
+    // control.inBackground(function() {
+    //     music.playTone(Note.G, music.beat(10))
+    // })
     // basic.showLeds(`
     //     . . # . .
     //     . # . . .
@@ -87,15 +94,20 @@ basic.forever(function () {
     left = (whiteLine ^ pins.digitalReadPin(leftP)) == 0 ? false : true;
     if(right){
         turnRight()
-    }else if(left){
+    }
+    else if(left){
         turnLeft()
-    }else{
+    
+    }
+    else if(!center){
+        control.inBackground(function() {
+            music.playTone(Note.F, music.beat(10))
+        })
+    }
+    else{
         forward()
     }
 })
-
-
-
 
 input.onButtonPressed(Button.B, function () {
     PCAmotor.MotorStopAll()
