@@ -39,60 +39,60 @@ function stableRight() {
 }
 
 function forward(){
-    speed1 = 80
-    speed2 = 80
+    speed1 = 100
+    speed2 = 100
     PCAmotor.MotorRun(PCAmotor.Motors.M1, speed1)
     PCAmotor.MotorRun(PCAmotor.Motors.M4, speed2)
-    basic.showLeds(`
-        . . # . .
-        . # # # .
-        # . # . #
-        . . # . .
-        . . # . .
-        `)
+    // basic.showLeds(`
+    //     . . # . .
+    //     . # # # .
+    //     # . # . #
+    //     . . # . .
+    //     . . # . .
+    //     `)
 }
 
 function turnLeft(){
-    speed1 = -50
-    speed2 = 70
+    speed1 = -80
+    speed2 = 80
     PCAmotor.MotorRun(PCAmotor.Motors.M1, speed1)
     PCAmotor.MotorRun(PCAmotor.Motors.M4, speed2)
-    basic.showLeds(`
-        . . # . .
-        . # . . .
-        # # # # #
-        . # . . .
-        . . # . .
-        `)
+    // basic.showLeds(`
+    //     . . # . .
+    //     . # . . .
+    //     # # # # #
+    //     . # . . .
+    //     . . # . .
+    //     `)
 }
 
 function turnRight() {
-    speed1 = 70
-    speed2 = -50
+    speed1 = 80
+    speed2 = -80
     PCAmotor.MotorRun(PCAmotor.Motors.M1, speed1)
     PCAmotor.MotorRun(PCAmotor.Motors.M4, speed2)
-    basic.showLeds(`
-        . . # . .
-        . . . # .
-        # # # # #
-        . . . # .
-        . . # . .
-        `)
+    // basic.showLeds(`
+    //     . . # . .
+    //     . . . # .
+    //     # # # # #
+    //     . . . # .
+    //     . . # . .
+    //     `)
 }
 
 
-    basic.forever(function () {
-        center = (whiteLine ^ pins.digitalReadPin(centerP)) == 0 ? false : true;
-        right = (whiteLine ^ pins.digitalReadPin(rightP)) == 0 ? false : true;
-        left = (whiteLine ^ pins.digitalReadPin(leftP)) == 0 ? false : true;
-        if(right){
-            turnRight()
-        }else if(left){
-            turnLeft()
-        }else{
-            forward()
-        }
-    })
+basic.forever(function () {
+    center = (whiteLine ^ pins.digitalReadPin(centerP)) == 0 ? false : true;
+    right = (whiteLine ^ pins.digitalReadPin(rightP)) == 0 ? false : true;
+    left = (whiteLine ^ pins.digitalReadPin(leftP)) == 0 ? false : true;
+    if(right){
+        turnRight()
+    }else if(left){
+        turnLeft()
+    }else{
+        forward()
+    }
+})
 
 
 
