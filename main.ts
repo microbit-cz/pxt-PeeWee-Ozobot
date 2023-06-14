@@ -15,6 +15,8 @@ let speed1: number = 70
 let speed2: number = 70
 let time = 0
 let whiteLine: number = 0
+let color: number = 0
+
 pins.setPull(centerP, PinPullMode.PullNone)
 pins.setPull(rightP, PinPullMode.PullNone)
 pins.setPull(leftP, PinPullMode.PullNone)
@@ -40,8 +42,8 @@ function stableRight() {
 }
 
 function forward(){
-    speed1 = 100
-    speed2 = 100
+    speed1 = 130
+    speed2 = 130
     PCAmotor.MotorRun(PCAmotor.Motors.M1, speed1)
     PCAmotor.MotorRun(PCAmotor.Motors.M4, speed2)
     // control.inBackground(function() {
@@ -57,8 +59,8 @@ function forward(){
 }
 
 function turnLeft(){
-    speed1 = -80
-    speed2 = 80
+    speed1 = -85
+    speed2 = 85
     PCAmotor.MotorRun(PCAmotor.Motors.M1, speed1)
     PCAmotor.MotorRun(PCAmotor.Motors.M4, speed2)
     // control.inBackground(function() {
@@ -74,8 +76,8 @@ function turnLeft(){
 }
 
 function turnRight() {
-    speed1 = 80
-    speed2 = -80
+    speed1 = 85
+    speed2 = -85
     PCAmotor.MotorRun(PCAmotor.Motors.M1, speed1)
     PCAmotor.MotorRun(PCAmotor.Motors.M4, speed2)
     // basic.showLeds(`
@@ -87,26 +89,39 @@ function turnRight() {
     //     `)
 }
 
+if(input.buttonIsPressed(Button.A)){
+    PlanetX_RGBsensor.setWhitePoint()
+}
+if(input.buttonIsPressed(Button.B)) {
+    PlanetX_RGBsensor.setBlackPoint()
+}
 
 basic.forever(function () {
     center = (whiteLine ^ pins.digitalReadPin(centerP)) == 0 ? false : true;
     right = (whiteLine ^ pins.digitalReadPin(rightP)) == 0 ? false : true;
     left = (whiteLine ^ pins.digitalReadPin(leftP)) == 0 ? false : true;
-    if(right){
-        turnRight()
-    }
-    else if(left){
-        turnLeft()
+    color = PlanetX_RGBsensor.readColor()
+    // if(right){
+    //     turnRight()
+    // }
+    // else if(left){
+    //     turnLeft()
     
-    }
-    else if(!center){
-        control.inBackground(function() {
-            music.playTone(Note.F, music.beat(10))
-        })
-    }
-    else{
-        forward()
-    }
+    // }
+    // else if(!center){
+    //     control.inBackground(function() {
+    //         music.playTone(Note.F, music.beat(10))
+    //     })
+    // }
+    // else if(right && left){
+    //     if(color = )
+    // }
+    // else{
+    //     forward()
+    // }
+
+    console.log(color)
+    basic.pause(200)
 })
 
 input.onButtonPressed(Button.B, function () {
