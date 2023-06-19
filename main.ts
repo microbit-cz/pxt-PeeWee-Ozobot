@@ -4,7 +4,6 @@
 //p14 leva
 //p13 prava
 
-
 const centerP: DigitalPin = DigitalPin.P15;
 const rightP: DigitalPin = DigitalPin.P13;
 const leftP: DigitalPin = DigitalPin.P14;
@@ -16,7 +15,20 @@ let speed2: number = 70
 let time = 0
 let whiteLine: number = 0
 let color: number = 0
-let red: boolean = false
+const yellow = {
+    min : 170,
+    max : 205
+}
+const red = {
+    min: 225,
+    max: 250
+}
+const blue = {
+    min: 216,
+    max: 219
+}
+let redDetect = false
+let yellowDetect = false
 
 pins.setPull(centerP, PinPullMode.PullNone)
 pins.setPull(rightP, PinPullMode.PullNone)
@@ -98,6 +110,14 @@ function right90(){
     basic.pause(250)
 }
 
+function left90(){
+    speed1 = -85
+    speed2 = 85
+    PCAmotor.MotorRun(PCAmotor.Motors.M1, speed1)
+    PCAmotor.MotorRun(PCAmotor.Motors.M4, speed2)
+    basic.pause(250)
+}
+
 
 if(input.buttonIsPressed(Button.A)){
     PlanetX_RGBsensor.setWhitePoint()
@@ -111,12 +131,21 @@ basic.forever(function () {
     right = (whiteLine ^ pins.digitalReadPin(rightP)) == 0 ? false : true;
     left = (whiteLine ^ pins.digitalReadPin(leftP)) == 0 ? false : true;
     color = PlanetX_RGBsensor.readColor()
+
+    if(color > red.min && color < red.max){
+        redDetect = true
+        yellowDetect = false
+    }
+    else if (color > yellow.min && color < yellow.max){
+        yellowDetect = true
+        redDetect = false
+    }
+
     if(right && !left){
         turnRight()
     }
     else if(left && !right){
         turnLeft()
-    
     }
     // else if(!center){
     //     control.inBackground(function() {
@@ -124,24 +153,19 @@ basic.forever(function () {
     //     })
     // }
     else if(right && left){
-        PCAmotor.MotorStopAll()
-        if(red){
-            
-            // right90()
-            // red = false
-        }   
+        if(redDetect){
+            right90()
+            redDetect = false
+        }
+        else if(yellowDetect){
+            left90()
+            yellowDetect = false
+        }
     }
     else{
         forward()
     }
 
-
-    if(color > 225){
-        red == true
-        music.playTone(Note.C, music.beat(BeatFraction.Whole))
-    }
-
     // console.log(color)
     // basic.pause(200)
 })
-
