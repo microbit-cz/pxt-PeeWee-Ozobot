@@ -16,20 +16,20 @@ let time = 0
 let whiteLine: number = 0
 let color: number = 0
 const yellow = {
-    min : 170,
+    min : 160,
     max : 210
 }
 const red = {
     min: 220,
-    max: 250
+    max: 290
 }
 const blue = {
-    min: 216,
+    min: 215,
     max: 219
 }
 const green = {
-    min: 187,
-    max: 199
+    min: 175,
+    max: 191
 }
 let redDetect = false
 let yellowDetect = false
@@ -61,8 +61,8 @@ function stableRight() {
 }
 
 function forward(){
-    speed1 = 100
-    speed2 = 100
+    speed1 = 110
+    speed2 = 110
     PCAmotor.MotorRun(PCAmotor.Motors.M1, speed1)
     PCAmotor.MotorRun(PCAmotor.Motors.M4, speed2)
     // control.inBackground(function() {
@@ -78,8 +78,8 @@ function forward(){
 }
 
 function turnLeft(){
-    speed1 = -85
-    speed2 = 85
+    speed1 = -95
+    speed2 = 95
     PCAmotor.MotorRun(PCAmotor.Motors.M1, speed1)
     PCAmotor.MotorRun(PCAmotor.Motors.M4, speed2)
     // control.inBackground(function() {
@@ -95,8 +95,8 @@ function turnLeft(){
 }
 
 function turnRight() {
-    speed1 = 85
-    speed2 = -85
+    speed1 = 95
+    speed2 = -95
     PCAmotor.MotorRun(PCAmotor.Motors.M1, speed1)
     PCAmotor.MotorRun(PCAmotor.Motors.M4, speed2)
     // basic.showLeds(`
@@ -109,27 +109,27 @@ function turnRight() {
 }
 
 function right90(){
-    speed1 = 85
-    speed2 = -85
-    PCAmotor.MotorRun(PCAmotor.Motors.M1, speed1)
-    PCAmotor.MotorRun(PCAmotor.Motors.M4, speed2)
-    basic.pause(250)
-}
-
-function left90(){
-    speed1 = -85
-    speed2 = 85
-    PCAmotor.MotorRun(PCAmotor.Motors.M1, speed1)
-    PCAmotor.MotorRun(PCAmotor.Motors.M4, speed2)
-    basic.pause(250)
-}
-
-function turnBack(){
-    speed1 = -85
-    speed2 = 85
+    speed1 = 110
+    speed2 = -110
     PCAmotor.MotorRun(PCAmotor.Motors.M1, speed1)
     PCAmotor.MotorRun(PCAmotor.Motors.M4, speed2)
     basic.pause(500)
+}
+
+function left90(){
+    speed1 = -110
+    speed2 = 110
+    PCAmotor.MotorRun(PCAmotor.Motors.M1, speed1)
+    PCAmotor.MotorRun(PCAmotor.Motors.M4, speed2)
+    basic.pause(500)
+}
+
+function turnBack(){
+    speed1 = -110
+    speed2 = 110
+    PCAmotor.MotorRun(PCAmotor.Motors.M1, speed1)
+    PCAmotor.MotorRun(PCAmotor.Motors.M4, speed2)
+    basic.pause(1200)
 }
 
 
@@ -151,24 +151,60 @@ basic.forever(function () {
         yellowDetect = false
         blueDetect = false
         greenDetect = false
+        control.inBackground(function () {
+            basic.showLeds(`
+            . . . . .
+            . . . . .
+            . . . . #
+            . . . . .
+            . . . . .
+            `)
+        })
     }
     else if(color > yellow.min && color < yellow.max){
         yellowDetect = true
         redDetect = false
         blueDetect = false
         greenDetect = false
+        control.inBackground(function () {
+            basic.showLeds(`
+            . . . . .
+            . . . . .
+            # . . . .
+            . . . . .
+            . . . . .
+            `)
+        })
     }
     else if (color > green.min && color < green.max) {
         greenDetect = true
         redDetect = false
         blueDetect = false
         yellowDetect = false
+        control.inBackground(function () {
+            basic.showLeds(`
+            . . # . .
+            . . . . .
+            . . . . .
+            . . . . .
+            . . . . .
+            `)
+        })
     }
     else if (color > blue.min && color < blue.max) {
         blueDetect = true
         redDetect = false
         yellowDetect = false
         greenDetect = false
+        control.inBackground(function () {
+            basic.showLeds(`
+            . . . . .
+            . . . . .
+            . . . . .
+            . . . . .
+            . . # . .
+            `)
+        })
     }
 
     if(right && !left){
@@ -183,6 +219,7 @@ basic.forever(function () {
     //     })
     // }
     else if(right && left){
+        basic.clearScreen()
         if(redDetect){
             right90()
             redDetect = false
