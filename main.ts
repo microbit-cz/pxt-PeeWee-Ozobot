@@ -17,18 +17,24 @@ let whiteLine: number = 0
 let color: number = 0
 const yellow = {
     min : 170,
-    max : 205
+    max : 210
 }
 const red = {
-    min: 225,
+    min: 220,
     max: 250
 }
 const blue = {
     min: 216,
     max: 219
 }
+const green = {
+    min: 187,
+    max: 199
+}
 let redDetect = false
 let yellowDetect = false
+let greenDetect = false
+let blueDetect = false
 
 pins.setPull(centerP, PinPullMode.PullNone)
 pins.setPull(rightP, PinPullMode.PullNone)
@@ -118,6 +124,14 @@ function left90(){
     basic.pause(250)
 }
 
+function turnBack(){
+    speed1 = -85
+    speed2 = 85
+    PCAmotor.MotorRun(PCAmotor.Motors.M1, speed1)
+    PCAmotor.MotorRun(PCAmotor.Motors.M4, speed2)
+    basic.pause(500)
+}
+
 
 if(input.buttonIsPressed(Button.A)){
     PlanetX_RGBsensor.setWhitePoint()
@@ -135,10 +149,26 @@ basic.forever(function () {
     if(color > red.min && color < red.max){
         redDetect = true
         yellowDetect = false
+        blueDetect = false
+        greenDetect = false
     }
-    else if (color > yellow.min && color < yellow.max){
+    else if(color > yellow.min && color < yellow.max){
         yellowDetect = true
         redDetect = false
+        blueDetect = false
+        greenDetect = false
+    }
+    else if (color > green.min && color < green.max) {
+        greenDetect = true
+        redDetect = false
+        blueDetect = false
+        yellowDetect = false
+    }
+    else if (color > blue.min && color < blue.max) {
+        blueDetect = true
+        redDetect = false
+        yellowDetect = false
+        greenDetect = false
     }
 
     if(right && !left){
@@ -157,9 +187,17 @@ basic.forever(function () {
             right90()
             redDetect = false
         }
+        else if(greenDetect){
+            forward()
+            greenDetect = false
+        }
         else if(yellowDetect){
             left90()
             yellowDetect = false
+        }
+        else if(blueDetect){
+            turnBack()
+            blueDetect = false
         }
     }
     else{
