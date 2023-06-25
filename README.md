@@ -2,7 +2,7 @@
 Video of the ride:
 https://github.com/microbit-cz/pxt-PeeWee-Ozobot/assets/36702826/68b69dc9-e167-43c1-9861-a15b63caa882
 
-## Edit this project ![Build status badge](https://github.com//microbit-cz/pxt-PeeWee-Ozobot/workflows/MakeCode/badge.svg)
+## Edit this project
 
 To edit this repository in MakeCode.
 
